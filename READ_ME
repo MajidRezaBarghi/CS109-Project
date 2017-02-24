@@ -1,0 +1,4 @@
+RFITransaction
+--------------
+o it is a static class that has a bunch of functions we can use
+o you can add helper functions to it that will allow us to do this project
