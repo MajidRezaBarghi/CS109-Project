@@ -9,7 +9,7 @@
 #ifndef project_include_h
 #define project_include_h
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <vector>
 #include <sstream>
 #include <stdio.h>

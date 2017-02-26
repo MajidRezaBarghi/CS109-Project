@@ -10,11 +10,11 @@
 #include "RFITransaction.h"
 
 int main(int argc, const char * argv[]) {
-  
+
   try{
-    RFITransaction::LOAD("/Users/Matthew/cmps109/hw3/RKTransaction/RKTransaction/File");
+    RFITransaction::LOAD("File");
   }
-  
+
   catch(const char* error){
     std::cout << error;
   }
