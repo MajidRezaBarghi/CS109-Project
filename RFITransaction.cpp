@@ -33,6 +33,8 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
   tokens = split(concat_string, '(');
   tokens = split(tokens[1],')');
   tokens = split(tokens[0],',');
+  //prints out the rules as they are parsed
+  for(int i=0; i < tokens.size(); i++)std::cout<<"tokens[" << i << "]" << tokens[i];
   return tokens;
 }
 
