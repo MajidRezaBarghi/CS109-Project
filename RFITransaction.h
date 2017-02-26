@@ -54,9 +54,9 @@ private:
 public:
   
   static void LOAD(std::string file_name);
-  void DUMP(std::string file_name);
-  void FACT(std::string fact_string);
-  void RULE(std::string rule_string);
+  static void DUMP(std::string file_name);
+  static void FACT(std::string fact_string);
+  static void RULE(std::string rule_string);
   // INFERENCE();
   
 };

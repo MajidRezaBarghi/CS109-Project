@@ -34,6 +34,7 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
   tokens = split(tokens[0],',');
   return tokens;
 }
+
 std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rules){
   
   std::vector<std::string> tokens = rules;
@@ -43,6 +44,13 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
   std::cout << "RULES: ";
   for(int i = 0; i < tokens.size(); i++)std::cout << tokens[i] << "\n";
   return tokens;
+}
+void RFITransaction::FACT(std::string fact_string){
+  std::vector<std::string> facts;
+  facts.push_back(fact_string);
+  facts = parseFact(facts);
+  
+  // add parsed fact to KB
 }
 void RFITransaction::LOAD(std::string file_name){
   std::ifstream in_file;
@@ -72,9 +80,11 @@ void RFITransaction::LOAD(std::string file_name){
       switch(parser_map[flag]){
         case 1:
           parseFact(items);
+          // add parsedFact to KB
           break;
         case 2:
           parseRule(items);
+          // add parsedRule to KB
           break;
         /*case 3:
           parseInference(the_rest);
@@ -85,7 +95,6 @@ void RFITransaction::LOAD(std::string file_name){
       }
       
     }
-    
     
   }else{
     throw "Error could not open file"; 
