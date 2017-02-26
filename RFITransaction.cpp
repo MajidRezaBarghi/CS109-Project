@@ -7,6 +7,7 @@
 //
 
 #include "RFITransaction.h"
+
 void RFITransaction:: removeCharsFromString( std::string &str, char* charsToRemove ) {
   for ( unsigned int i = 0; i < strlen(charsToRemove); ++i ) {
     str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );

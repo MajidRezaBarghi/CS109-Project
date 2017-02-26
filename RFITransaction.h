@@ -52,7 +52,6 @@ private:
   static std::vector<std::string> parseInference(std::vector<std::string> queries);
   
 public:
-  
   static void LOAD(std::string file_name);
   void DUMP(std::string file_name);
   void FACT(std::string fact_string);
