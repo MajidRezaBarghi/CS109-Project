@@ -1,0 +1,2 @@
+FACT Blah(arg,arg1,arg2)
+RULE GRANDMother($X,$Y):- AND Mother($X,$Z) Father($Z,$Y)
