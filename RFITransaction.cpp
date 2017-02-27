@@ -8,6 +8,7 @@
 
 
 #include "RFITransaction.h"
+
 void RFITransaction:: removeCharsFromString( std::string &str, char* charsToRemove ) {
   for ( unsigned int i = 0; i < strlen(charsToRemove); ++i ) {
     str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );
@@ -30,11 +31,14 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
     it!= tokens.end(); it++){
     concat_string += *it;
   }
+  
   tokens = split(concat_string, '(');
   tokens = split(tokens[1],')');
   tokens = split(tokens[0],',');
+  std::string temp = tokens[0];
+  tokens.erase(tokens.begin());
+  tokens.push_back(temp);
   //prints out the rules as they are parsed
-  for(int i=0; i < tokens.size(); i++)std::cout<<"tokens[" << i << "]" << tokens[i];
   return tokens;
 }
 
@@ -44,8 +48,10 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
 
   char lose[] = ":-";
   removeCharsFromString(tokens[0],lose);
-  std::cout << "RULES: ";
-  for(int i = 0; i < tokens.size(); i++)std::cout << tokens[i] << "\n";
+  std::string temp = tokens[0];
+  tokens.erase(tokens.begin());
+  tokens.push_back(temp);
+  
   return tokens;
 }
 void RFITransaction::FACT(std::string fact_string){
@@ -55,18 +61,26 @@ void RFITransaction::FACT(std::string fact_string){
 
   // add parsed fact to KB
 }
+void RFITransaction::RULE(std::string rule_string){
+  std::vector<std::string> rules;
+  rules.push_back(rule_string);
+  rules = parseRule(rules);
+  
+  // add parsed rule to RB
+}
 void RFITransaction::LOAD(std::string file_name){
   std::ifstream in_file;
   in_file.open(file_name, std::ios_base::in);
-
+  
   if(in_file.is_open()){
+    
     std::string line;
     std::map<std::string,int> parser_map;
     parser_map["FACT"] = 1;
     parser_map["RULE"] = 2;
     parser_map["INFERENCE"] = 3;
-
     while(std::getline(in_file,line)){
+     
       // flag tells us if rule,inference,fact
       std::string flag;
 
@@ -77,6 +91,7 @@ void RFITransaction::LOAD(std::string file_name){
 
       // tokenize the string and parse
       iss >> flag;
+      
       while(iss >> next){
         items.push_back(next);
       }
@@ -102,5 +117,6 @@ void RFITransaction::LOAD(std::string file_name){
   }else{
     throw "Error could not open file";
   }
+  in_file.close();
 
 }
