@@ -1,3 +1,6 @@
+#ifndef KRBASE_H
+#define KRBASE_H
+
 #include "project_include.h"
 
 class KRBase {
@@ -7,7 +10,11 @@ class KRBase {
       std::vector<std::string> filterInference(const std::string fact_name, std::string arg1, ...);
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
 
-   public:   
+   public:
       std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> FactBase;
       std::map<std::string,std::vector<std::string>> RuleBase;
-}
+      std::map<std::string,std::list<std::string>> NewRuleBase;
+      std::map<std::string,std::map<std::size_t,std::list<std::list<std::string>>>> NewFactBase;
+};
+
+#endif

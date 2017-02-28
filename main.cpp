@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "RFITransaction.h"
+#include "KRBase.h"
 
 int main(int argc, const char * argv[]) {
 
