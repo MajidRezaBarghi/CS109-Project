@@ -11,23 +11,28 @@
 #include "KRBase.h"
 
 int main(int argc, const char * argv[]) {
-
-  try{
-    RFITransaction::LOAD("File");
-  }
-  catch(const char* error){
-    std::cout << error;
-  }
+  //
+  // try{
+  //   RFITransaction::LOAD("File");
+  // }
+  // catch(const char* error){
+  //   std::cout << error;
+  // }
   KRBase test;
   std::vector<std::string> v;
-    std::vector<std::string> v1;
-      std::vector<std::string> v2;
+  std::vector<std::string> v1;
+  std::vector<std::string> v2;
   v.push_back("Fact(a5,a2,a4)");
+  std::vector<std::string> v3;
+  v3.push_back("Fact($a5,a2,a4)");
   v1.push_back("Fact(a5,a3,a6)");
   v2.push_back("Fact(a5,a7,a8)");
+  v = RFITransaction::parseFact(v);
+  v1 = RFITransaction::parseFact(v1);
+  v2 = RFITransaction::parseFact(v2);
   test.addFact(v);
   test.addFact(v1);
   test.addFact(v2);
-  test.queryFacts(v);
+  test.queryFacts(v3);
   return 0;
 }
