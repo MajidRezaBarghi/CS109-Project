@@ -17,12 +17,16 @@ KRBase.h
 /home/rbarghi/Dropbox/CS109-Project/src/KRBase.cpp
 KRBase.h
 /home/rbarghi/Dropbox/CS109-Project/src/KRBase.h
+RFITransaction.h
+/home/rbarghi/Dropbox/CS109-Project/src/RFITransaction.h
 
 /home/rbarghi/Dropbox/CS109-Project/src/RFITransaction.cpp
 RFITransaction.h
 /home/rbarghi/Dropbox/CS109-Project/src/RFITransaction.h
 
 include/KRBase.h
+RFITransaction.h
+include/RFITransaction.h
 project_include.h
 include/project_include.h
 

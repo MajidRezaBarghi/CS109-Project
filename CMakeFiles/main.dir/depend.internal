@@ -9,6 +9,7 @@ CMakeFiles/main.dir/main.cpp.o
 CMakeFiles/main.dir/src/KRBase.cpp.o
  /home/rbarghi/Dropbox/CS109-Project/src/KRBase.cpp
  include/KRBase.h
+ include/RFITransaction.h
  include/project_include.h
 CMakeFiles/main.dir/src/RFITransaction.cpp.o
  /home/rbarghi/Dropbox/CS109-Project/src/RFITransaction.cpp

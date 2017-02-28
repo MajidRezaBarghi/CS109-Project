@@ -8,6 +8,7 @@ CMakeFiles/main.dir/main.cpp.o: include/project_include.h
 
 CMakeFiles/main.dir/src/KRBase.cpp.o: src/KRBase.cpp
 CMakeFiles/main.dir/src/KRBase.cpp.o: include/KRBase.h
+CMakeFiles/main.dir/src/KRBase.cpp.o: include/RFITransaction.h
 CMakeFiles/main.dir/src/KRBase.cpp.o: include/project_include.h
 
 CMakeFiles/main.dir/src/RFITransaction.cpp.o: src/RFITransaction.cpp

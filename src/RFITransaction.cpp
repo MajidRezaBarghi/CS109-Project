@@ -24,19 +24,23 @@ std::vector<std::string> RFITransaction:: split(const std::string &s, char delim
   return tokens;
 }
 
+
+
 std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& facts){
   std::string concat_string = "";
+  std::string fact_name;
   std::vector<std::string> tokens = facts;
-  for (std::vector<std::string>::iterator it = tokens.begin();
-    it!= tokens.end(); it++){
+  for (std::vector<std::string>::iterator it = tokens.begin();it!= tokens.end(); it++){
     concat_string += *it;
   }
   tokens = split(concat_string, '(');
+  fact_name = tokens[0];
   tokens = split(tokens[1],')');
   tokens = split(tokens[0],',');
-
-  for(int i=0; i < tokens.size(); i++)std::cout<<"tokens[" << i << "]" << tokens[i] << " ";
-  std::cout << "\n";
+  tokens.push_back(fact_name);
+  // for(int i=0; i < tokens.size(); i++)std::cout<<"tokens[" << i << "]" << tokens[i] << " ";
+  // // debugger
+  // std::cout << "\n";
   return tokens;
 }
 
