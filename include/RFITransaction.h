@@ -60,7 +60,7 @@ public:
   void LOAD(std::string file_name);
   void DUMP(std::string file_name);
   void FACT(std::string fact_string);
-  void RULE(std::string rule_string);
+  void RULE(std::vector<std::string> rule_string);
 };
 
 #endif /* RFITransaction_hpp */
