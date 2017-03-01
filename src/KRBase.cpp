@@ -56,8 +56,13 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
   return facts;
 }
 
-
 void KRBase::addRule(std::vector<std::string>& rules){
+         std::string rule_key = rules.back();
+         rules.pop_back();
+         RuleBase[rule_key] = rules;
+}
+
+void KRBase::deleteRule(std::vector<std::string>& rules){
          std::string rule_key = rules.back();
          rules.pop_back();
          RuleBase[rule_key] = rules;
