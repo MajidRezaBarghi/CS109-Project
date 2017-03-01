@@ -166,13 +166,10 @@ void RFITransaction::LOAD(std::string file_name){
   }
 
 }
-//
-// void RFITransaction::RULE(std::vector<std::string> rule_string) {
-//       }
-//     //case "AND":
-
-    //default:
-     //something
+void RFITransaction::DROP(){
+  krbase.deleteAllFacts();
+  krbase.deleteAllRules();
+}
 
 void RFITransaction::DUMP(std::string file_name) {
   std::ofstream dump_file;
