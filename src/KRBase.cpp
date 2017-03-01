@@ -4,6 +4,15 @@
 KRBase::KRBase(){
 
 }
+
+bool KRBase::isKeyinF(std::string key){
+  return FactBase.count(key)>.0;
+}
+
+bool KRBase::isKeyinR(std::string key){
+  return RuleBase.count(key)>0;
+}
+
 void KRBase::addFact(std::vector<std::string> &facts){
          std::string fact_key = facts.back();
          std::size_t args_key = facts.size() -1 ;
@@ -16,7 +25,7 @@ void KRBase::deleteFact(std::vector<std::string> &facts) {
          std::size_t args_key = facts.size() - 1 ;
          //std::cout << args_key << '\n';
          FactBase[fact_key][args_key].pop_back();
-         //std::cout << FactBase[fact_key][args_key].size() << '\n';
+         std::cout << FactBase[fact_key][args_key].size() << '\n';
          TotFacts--;
 }
 

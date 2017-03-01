@@ -54,7 +54,7 @@ private:
   std::vector<std::string> parseInference(std::vector<std::string> queries);
 public:
   RFITransaction();
-  void INFERENCE(std::vector<std::string>& set_facts);
+  std::vector<std::string> INFERENCE(std::vector<std::string>& set_facts);
   void LOAD(std::string file_name);
   void DUMP(std::string file_name);
   void FACT(std::string fact_string);

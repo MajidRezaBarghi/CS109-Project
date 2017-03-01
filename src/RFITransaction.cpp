@@ -10,7 +10,7 @@
 #include "RFITransaction.h"
 
 RFITransaction::RFITransaction(){
-  
+
 }
 void RFITransaction:: removeCharsFromString( std::string &str, char* charsToRemove ) {
   for ( unsigned int i = 0; i < strlen(charsToRemove); ++i ) {
@@ -75,18 +75,39 @@ void RFITransaction::RULE(std::string rule_string) {
   std::vector<std::string>tokens = parseFact(rules);
   krbase.addFact(tokens);
 }
-void RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
-  
+std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
+  std::vector<std::string> v;
+  if(krbase.isKeyinR(set_facts[0])){
+  std::cout<<"here" << set_facts.size() << '\n';
+  std::vector<std::string> v = set_facts;
+  std::map<std::string,int> rule_map;
+
+  rule_map["OR"]= 1;
+
+  switch(rule_map[set_facts[1]]) {
+    case 1:
+      for(int i = 2; i < v.size(); i++) {
+        std::cout << v[i] << '\n';
+        std::vector<std::string> temp;
+        temp.push_back(v[i]);
+        krbase.queryFacts(parseFact(temp));
+      };
+    };
+  }
+  if(krbase.isKeyinF(set_facts[set_facts.size()])){
+    krbase.queryFacts(set_facts);
+  }
+  return v;
 }
 void RFITransaction::LOAD(std::string file_name){
   std::ifstream in_file;
   in_file.open(file_name, std::ios_base::in);
-  
+
   if(in_file.is_open()){
-    
+
     std::string line;
     std::map<std::string,int> parser_map;
-    
+
     parser_map["FACT"] = 1;
     parser_map["RULE"] = 2;
     parser_map["INFERENCE"] = 3;
@@ -106,7 +127,7 @@ void RFITransaction::LOAD(std::string file_name){
         items.push_back(next);
         std::cout << items.size() << '\n';
       }
-      
+
       switch(parser_map[flag]){
         case 1:
           items = parseFact(items);
@@ -115,18 +136,15 @@ void RFITransaction::LOAD(std::string file_name){
         case 2:
           items = parseRule(items);
           krbase.addRule(items);
-<<<<<<< HEAD
           break;
-          
+
         case 3:
           items = parseInference(items);
           items = krbase.queryFacts(items);
           INFERENCE(items);
-=======
           // add parsedRule to KB
->>>>>>> 904ab964218a0f9cd1af0e222c916391c39fe4a6
           break;
-          
+
         default:
           throw "error, that command was not found";
           break;
@@ -139,29 +157,10 @@ void RFITransaction::LOAD(std::string file_name){
   }
 
 }
-
-<<<<<<< HEAD
-
-=======
-void RFITransaction::RULE(std::vector<std::string> rule_string) {
-  std::cout<<"here" << rule_string.size() << '\n';
-  std::vector<std::string> v = rule_string;
-  std::map<std::string,int> rule_map;
-
-  rule_map["OR"] =1;
-  switch(rule_map[rule_string[1]]) {
-    case 1:
-      for(int i = 2; i < v.size(); i++) {
-        std::cout << v[i] << '\n';
-        std::vector<std::string> temp;
-        temp.push_back(v[i]);
-        krbase.queryFacts(parseFact(temp));
-      }
-    //case "AND":
+//
+// void RFITransaction::RULE(std::vector<std::string> rule_string) {
+//       }
+//     //case "AND":
 
     //default:
-      //something
-  }
-
-}
->>>>>>> 904ab964218a0f9cd1af0e222c916391c39fe4a6
+     //something
