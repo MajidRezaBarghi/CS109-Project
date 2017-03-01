@@ -44,23 +44,21 @@
 #define RFITransaction_hpp
 #include "project_include.h"
 #include "KRBase.h"
-class KRBase;
 class RFITransaction{
 private:
   KRBase krbase;
-public:
-  RFITransaction();
   void removeCharsFromString(std::string &str, char* charsToRemove);
   std::vector<std::string> split(const std::string& s, char delim);
   std::vector<std::string> parseFact(std::vector<std::string>& facts);
   std::vector<std::string> parseRule(std::vector<std::string>& rules);
   std::vector<std::string> parseInference(std::vector<std::string> queries);
-
-  // INFERENCE();
+public:
+  RFITransaction();
+  void INFERENCE(std::vector<std::string>& set_facts);
   void LOAD(std::string file_name);
   void DUMP(std::string file_name);
   void FACT(std::string fact_string);
-  void RULE(std::vector<std::string> rule_string);
+  void RULE(std::string rule_string);
 };
 
 #endif /* RFITransaction_hpp */
