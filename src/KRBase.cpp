@@ -5,7 +5,15 @@ void KRBase::addFact(std::vector<std::string> &facts){
          std::size_t args_key = facts.size() -1 ;
          FactBase[fact_key][args_key].push_back(facts);
          TotFacts++;
-         return;
+}
+
+void KRBase::deleteFact(std::vector<std::string> &facts) {
+	 std::string fact_key = facts.back();
+         std::size_t args_key = facts.size() - 1 ;
+         std::cout << args_key << '\n';
+         FactBase[fact_key][args_key].pop_back(facts);
+         //std::cout << FactBase[fact_key][args_key].size() << '\n';
+         TotFacts--;
 }
 
 // std::vector<std::string> kRBase::parseFact(std::vector<std::string>& facts)

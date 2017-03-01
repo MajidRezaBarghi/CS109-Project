@@ -34,5 +34,7 @@ int main(int argc, const char * argv[]) {
   test.addFact(v1);
   test.addFact(v2);
   test.queryFacts(RFITransaction::parseFact(v3));
+
+  test.deleteFact(v);
   return 0;
 }

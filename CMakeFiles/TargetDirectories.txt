@@ -1,3 +1,0 @@
-/home/rbarghi/Dropbox/CS109-Project/CMakeFiles/rebuild_cache.dir
-/home/rbarghi/Dropbox/CS109-Project/CMakeFiles/edit_cache.dir
-/home/rbarghi/Dropbox/CS109-Project/CMakeFiles/main.dir
