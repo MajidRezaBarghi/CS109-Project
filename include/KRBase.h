@@ -13,6 +13,7 @@ namespace unlock{
   }
 }
 
+
 class KRBase
 {
    private:
