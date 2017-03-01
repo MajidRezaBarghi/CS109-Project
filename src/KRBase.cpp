@@ -14,11 +14,13 @@ bool KRBase::isKeyinR(std::string key){
 }
 
 void KRBase::addFact(std::vector<std::string> &facts){
-         std::string fact_key = facts.back();
-         std::size_t args_key = facts.size() -1 ;
-         FactBase[fact_key][args_key].push_back(facts);
-         TotFacts++;
+  std::string fact_key = facts.back();
+  facts.pop_back();
+  std::size_t args_key = facts.size() -1 ;
+  FactBase[fact_key][args_key].push_back(facts);
+  TotFacts++;
 }
+
 
 void KRBase::deleteFact(std::vector<std::string> &facts) {
 	 std::string fact_key = facts.back();
@@ -101,6 +103,7 @@ std::vector<std::string> KRBase:: getFacts(){
   fact_string = std::string();
   
   for(int i = 0; i < key_factnames.size(); i++){
+    fact_string += "FACT ";
     fact_string += key_factnames[i];
     fact_string += "(";
     fact_string += facts[i];
