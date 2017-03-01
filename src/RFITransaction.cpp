@@ -51,9 +51,10 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
 
   std::vector<std::string> tokens = rules;
 
-  char lose[] = ":-";
+  char lose[] =":-";
   removeCharsFromString(tokens[0],lose);
   std::cout << "RULES: ";
+  std::cout <<"THis sucks"<< tokens.size() << '\n';
   for(int i = 0; i < tokens.size(); i++)std::cout << tokens[i] << "\n";
   return tokens;
 }
@@ -88,6 +89,7 @@ void RFITransaction::LOAD(std::string file_name){
       iss >> flag;
       while(iss >> next){
         items.push_back(next);
+        std::cout << items.size() << '\n';
       }
       switch(parser_map[flag]){
         case 1:
@@ -96,7 +98,8 @@ void RFITransaction::LOAD(std::string file_name){
           // add parsedFact to KB
           break;
         case 2:
-          parseRule(items);
+          items = parseRule(items);
+          krbase.addRule(items);
           // add parsedRule to KB
           break;
         /*case 3:
@@ -116,13 +119,18 @@ void RFITransaction::LOAD(std::string file_name){
 }
 
 void RFITransaction::RULE(std::vector<std::string> rule_string) {
-
+  std::cout<<"here" << rule_string.size() << '\n';
+  std::vector<std::string> v = rule_string;
   std::map<std::string,int> rule_map;
 
+  rule_map["OR"] =1;
   switch(rule_map[rule_string[1]]) {
     case 1:
-      for(int i = 2; i < rule_string.size(); i++) {
-        krbase.queryFacts(rule_string);
+      for(int i = 2; i < v.size(); i++) {
+        std::cout << v[i] << '\n';
+        std::vector<std::string> temp;
+        temp.push_back(v[i]);
+        krbase.queryFacts(parseFact(temp));
       }
     //case "AND":
 
