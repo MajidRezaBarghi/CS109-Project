@@ -124,7 +124,6 @@ void RFITransaction::RULE(std::vector<std::string> rule_string) {
       for(int i = 2; i < rule_string.size(); i++) {
         krbase.queryFacts(rule_string);
       }
-      ;
     //case "AND":
 
     //default:

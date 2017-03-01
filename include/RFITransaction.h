@@ -45,7 +45,7 @@
 #include "project_include.h"
 #include "KRBase.h"
 class KRBase;
-class RFITransaction:public KRBase{
+class RFITransaction{
 private:
   KRBase krbase;
 public:
