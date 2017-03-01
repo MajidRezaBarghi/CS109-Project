@@ -15,6 +15,15 @@ int main(int argc, const char * argv[]) {
   try{
     RFI.LOAD("File");
     RFI.FACT("bah(a6,$a6,$a3)");
+    std::vector<std::string> v;
+    std::istringstream iss("Parent($X,$Y):- OR Mother($X,$Y) Father($X,$Y)");
+    std::string next;
+    while(iss >> next){
+      v.push_back(next);
+      std::cout << v.size() << '\n';
+    }
+    //v = RFI.parseRule(v);
+    //RFI.RULE(RFI.parseRule(v));
   }
   catch(const char* error){
     std::cout << error;
