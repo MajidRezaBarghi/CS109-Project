@@ -1,8 +1,13 @@
 #ifndef KRBASE_H
 #define KRBASE_H
 #include "project_include.h"
-
+/*
+This class helps to store all rule and facts that are parsed inside of
+ RFITransaction. Both of these classes work in union to store and create
+ new facts/rules, return query results, and manipulate information.
+*/
 namespace unlock{
+  //this function was taken from the internet to unlock our maps
   template<typename TK, typename TV>
   std::vector<TK> extract_keys(std::map<TK, TV> const& input_map) {
     std::vector<TK> retval;
