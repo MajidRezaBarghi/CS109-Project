@@ -57,6 +57,7 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
   for(int i = 0; i < tokens.size(); i++)std::cout << tokens[i] << "\n";
   return tokens;
 }
+
 void RFITransaction::FACT(std::string fact_string){
   std::vector<std::string> facts;
   facts.push_back(fact_string);
@@ -113,4 +114,8 @@ void RFITransaction::LOAD(std::string file_name){
     throw "Error could not open file";
   }
 
+}
+
+void RFITransaction::RULE(std::string rule_string) {
+  
 }

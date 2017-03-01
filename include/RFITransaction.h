@@ -55,14 +55,12 @@ public:
   std::vector<std::string> parseFact(std::vector<std::string>& facts);
   std::vector<std::string> parseRule(std::vector<std::string>& rules);
   std::vector<std::string> parseInference(std::vector<std::string> queries);
+
   // INFERENCE();
   void LOAD(std::string file_name);
   void DUMP(std::string file_name);
   void FACT(std::string fact_string);
   void RULE(std::string rule_string);
-
-
-
 };
 
 #endif /* RFITransaction_hpp */
