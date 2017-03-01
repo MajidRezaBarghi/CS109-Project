@@ -29,9 +29,10 @@ void KRBase::deleteAllFacts(std::vector<std::string> &facts) {
          TotFacts--;
 }
 
-// std::vector<std::string> KRBase::queryRule(std::string query){
-//   return RuleBase[query];
-// }
+std::vector<std::string> KRBase::queryRule(const std::vector<std::string>& query){
+  return RuleBase[query[0]];
+}
+>>>>>>> b58e760cc07218d3cc250e340185129efd7f69b7
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
   std::vector<std::string> result;
@@ -71,6 +72,45 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
     temp = "";
   };
   return facts;
+}
+std::vector<std::string> KRBase:: getFacts(){
+  std::vector<std::string> facts;
+  std::vector<std::string> alternative_facts;
+  std::vector<std::vector<std::string>> fact_vects;
+  //key_factnames are all the names of the facts
+  std::vector<std::string> key_factnames = unlock::extract_keys(FactBase);
+  std::vector<std::size_t> key_argcount;
+  std::string fact_string = std::string();
+
+  for(int i = 0; i < key_factnames.size(); i++){
+    key_argcount = unlock::extract_keys(FactBase[key_factnames[i]]);
+    for(int j = 0; j < key_argcount.size(); j++){
+      for(int k = 0; k < FactBase[key_factnames[i]][key_argcount[j]].size(); i++){
+        fact_vects.push_back(FactBase[key_factnames[i]][key_argcount[j]][k]);
+      }
+    }
+  }
+
+  for(int i = 0; i < fact_vects.size(); i++){
+    for(int j = 0; j < fact_vects[i].size(); j++){
+      fact_string += fact_vects[i][j];
+      fact_string += (0 < (fact_vects.size()-j))?",":"";
+    }
+    facts.push_back(fact_string);
+    fact_string = "";
+  }
+  fact_string = std::string();
+
+  for(int i = 0; i < key_factnames.size(); i++){
+    fact_string += key_factnames[i];
+    fact_string += "(";
+    fact_string += facts[i];
+    fact_string += ")";
+    alternative_facts.push_back(fact_string);
+    fact_string = std::string();
+  }
+
+  return alternative_facts;
 }
 
 std::vector<std::string> KRBase::getRules(){

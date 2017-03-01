@@ -28,7 +28,9 @@ class KRBase
       void addFact(std::vector<std::string>& facts);
       bool isKeyinF(std::string key);
       bool isKeyinR(std::string key);
-      void deleteAllRules();
+
+      void deleteRule(std::vector<std::string>& rules);
+      std::vector<std::string> getFacts();
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
       std::vector<std::string> queryRule(const std::vector<std::string>& query);
       std::vector<std::string> getRules();
