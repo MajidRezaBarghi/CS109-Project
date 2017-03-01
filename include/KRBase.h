@@ -20,7 +20,7 @@ class KRBase
       bool isKeyinR(std::string key);
       void deleteRule(std::vector<std::string>& rules);
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
-      std::vector<std::string> queryRule(const std::vector<std::string>& query);
+      std::vector<std::string> queryRule(const std::string query);
       //std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> FactBase;
       //std::map<std::string,std::list<std::string>> NewRuleBase;
       std::map<std::string,std::map<std::size_t,std::list<std::vector<std::string>>>> NewFactBase;
