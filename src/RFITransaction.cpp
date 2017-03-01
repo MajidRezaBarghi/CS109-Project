@@ -62,7 +62,6 @@ void RFITransaction::FACT(std::string fact_string){
   facts.push_back(fact_string);
   krbase.queryFacts(parseFact(facts));
 
-
   // add parsed fact to KB
 }
 void RFITransaction::LOAD(std::string file_name){
