@@ -9,6 +9,9 @@
 
 #include "RFITransaction.h"
 
+RFITransaction::RFITransaction():krbase(){
+}
+
 void RFITransaction:: removeCharsFromString( std::string &str, char* charsToRemove ) {
   for ( unsigned int i = 0; i < strlen(charsToRemove); ++i ) {
     str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );
@@ -57,14 +60,14 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
 void RFITransaction::FACT(std::string fact_string){
   std::vector<std::string> facts;
   facts.push_back(fact_string);
-  facts = parseFact(facts);
+  krbase.queryFacts(parseFact(facts));
+
 
   // add parsed fact to KB
 }
 void RFITransaction::LOAD(std::string file_name){
   std::ifstream in_file;
   in_file.open(file_name, std::ios_base::in);
-
   if(in_file.is_open()){
     std::string line;
     std::map<std::string,int> parser_map;
@@ -88,7 +91,8 @@ void RFITransaction::LOAD(std::string file_name){
       }
       switch(parser_map[flag]){
         case 1:
-          parseFact(items);
+          items = parseFact(items);
+          krbase.addFact(items);
           // add parsedFact to KB
           break;
         case 2:

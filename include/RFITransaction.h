@@ -43,21 +43,23 @@
 #ifndef RFITransaction_hpp
 #define RFITransaction_hpp
 #include "project_include.h"
-// #include "KRBase.h"
-class RFITransaction{
+#include "KRBase.h"
+class KRBase;
+class RFITransaction:public KRBase{
 private:
-
+  KRBase krbase;
 public:
-  static void removeCharsFromString(std::string &str, char* charsToRemove);
-  static std::vector<std::string> split(const std::string& s, char delim);
-  static std::vector<std::string> parseFact(std::vector<std::string>& facts);
-  static std::vector<std::string> parseRule(std::vector<std::string>& rules);
-  static std::vector<std::string> parseInference(std::vector<std::string> queries);
+  RFITransaction();
+  void removeCharsFromString(std::string &str, char* charsToRemove);
+  std::vector<std::string> split(const std::string& s, char delim);
+  std::vector<std::string> parseFact(std::vector<std::string>& facts);
+  std::vector<std::string> parseRule(std::vector<std::string>& rules);
+  std::vector<std::string> parseInference(std::vector<std::string> queries);
   // INFERENCE();
-  static void LOAD(std::string file_name);
-  static void DUMP(std::string file_name);
-  static void FACT(std::string fact_string);
-  static void RULE(std::string rule_string);
+  void LOAD(std::string file_name);
+  void DUMP(std::string file_name);
+  void FACT(std::string fact_string);
+  void RULE(std::string rule_string);
 
 
 
