@@ -79,29 +79,33 @@ std::vector<std::string> KRBase:: getFacts(){
   //key_factnames are all the names of the facts
   std::vector<std::string> key_factnames = unlock::extract_keys(FactBase);
   std::vector<std::size_t> key_argcount;
-  std::string fact_string = "";
+  std::string fact_string = std::string();
   
   for(int i = 0; i < key_factnames.size(); i++){
     key_argcount = unlock::extract_keys(FactBase[key_factnames[i]]);
     for(int j = 0; j < key_argcount.size(); j++){
-      fact_vects = FactBase[key_factnames[i]][key_argcount[j]];
+      for(int k = 0; k < FactBase[key_factnames[i]][key_argcount[j]].size(); i++){
+        fact_vects.push_back(FactBase[key_factnames[i]][key_argcount[j]][k]);
+      }
     }
   }
   
   for(int i = 0; i < fact_vects.size(); i++){
     for(int j = 0; j < fact_vects[i].size(); j++){
       fact_string += fact_vects[i][j];
-      fact_string += (i != fact_vects.size()-1)?",":"";
+      fact_string += (0 < (fact_vects.size()-j))?",":"";
     }
     facts.push_back(fact_string);
-    fact_string = std::string();
+    fact_string = "";
   }
   fact_string = std::string();
+  
   for(int i = 0; i < key_factnames.size(); i++){
-    for(int j = 0; j < facts.size(); j++){
-      fact_string += key_factnames[i] + "(" + facts[j] + ")";
-      alternative_facts.push_back(fact_string);
-    }
+    fact_string += key_factnames[i];
+    fact_string += "(";
+    fact_string += facts[i];
+    fact_string += ")";
+    alternative_facts.push_back(fact_string);
     fact_string = std::string();
   }
   
