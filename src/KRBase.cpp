@@ -89,7 +89,7 @@ std::vector<std::string> KRBase::getRules(){
     std::cout<<rules[i];
     ret_string = "";
   }
-  
+
   return rules;
 }
 

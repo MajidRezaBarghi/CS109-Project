@@ -48,9 +48,9 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
 }
 
 std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rules){
-  
+
   std::vector<std::string> tokens = rules;
-  
+
   char lose[] = ":-";
   removeCharsFromString(tokens[0],lose);
   auto temp = tokens[0];
@@ -81,26 +81,21 @@ void RFITransaction::RULE(std::string rule_string) {
   tokens = temp_vect;
   tokens.push_back(temp);
   for(int i = 0; i < tokens.size(); i++){
-    std::cout << tokens[i] << "\n";
+    //std::cout << tokens[i] << "\n";
   }
   krbase.addRule(tokens);
 }
 
 std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
   std::vector<std::string> v;
-  std::cout << krbase.isKeyinR(set_facts[0]) << '\n';
+  std::cout << set_facts[0] << '\n';
   if(krbase.isKeyinR(set_facts[0])){
-  std::cout<<"here" << set_facts.size() << '\n';
-  std::vector<std::string> v = set_facts;
+  v = krbase.queryRule(set_facts);
   std::map<std::string,int> rule_map;
-
   rule_map["OR"]= 1;
-  std::cout << "here" << '\n';
-  switch(rule_map[set_facts[1]]) {
+  switch(rule_map[v[0]]) {
     case 1:
-    std::cout << "here3" << '\n';
-      for(int i = 2; i < v.size(); i++) {
-        std::cout << v[i] << '\n';
+      for(int i = 1; i < v.size(); i++) {
         std::vector<std::string> temp;
         temp.push_back(v[i]);
         krbase.queryFacts(parseFact(temp));
@@ -108,7 +103,6 @@ std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set
     };
   }
   v = parseFact(set_facts);
-  std::cout << v.back() << '\n';
   if(krbase.isKeyinF(v.back())){
     krbase.queryFacts(v);
   }
@@ -140,7 +134,7 @@ void RFITransaction::LOAD(std::string file_name){
       iss >> flag;
       while(iss >> next){
         items.push_back(next);
-        std::cout << items.size() << '\n';
+        //std::cout << items.size() << '\n';
       }
 
       switch(parser_map[flag]){
@@ -154,7 +148,6 @@ void RFITransaction::LOAD(std::string file_name){
           break;
 
         case 3:
-          std::cout <<items[0]<< '\n';
           //items = parseInference(items);
           //items = krbase.queryFacts(items);
           INFERENCE(items);
