@@ -14,7 +14,7 @@ void KRBase::deleteFact(std::vector<std::string> &facts) {
 	 std::string fact_key = facts.back();
          std::size_t args_key = facts.size() - 1 ;
          std::cout << args_key << '\n';
-         FactBase[fact_key][args_key].pop_back(facts);
+         FactBase[fact_key][args_key].pop_back();
          //std::cout << FactBase[fact_key][args_key].size() << '\n';
          TotFacts--;
 }
@@ -69,8 +69,13 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
   return facts;
 }
 
-
 void KRBase::addRule(std::vector<std::string>& rules){
+         std::string rule_key = rules.back();
+         rules.pop_back();
+         RuleBase[rule_key] = rules;
+}
+
+void KRBase::deleteRule(std::vector<std::string>& rules){
          std::string rule_key = rules.back();
          rules.pop_back();
          RuleBase[rule_key] = rules;
