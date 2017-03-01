@@ -1,12 +1,9 @@
 #include "KRBase.h"
-#include "RFITransaction.h"
 
 void KRBase::addFact(std::vector<std::string> &facts){
          std::string fact_key = facts.back();
          std::size_t args_key = facts.size() -1 ;
-         std::cout << args_key << '\n';
          FactBase[fact_key][args_key].push_back(facts);
-         //std::cout << FactBase[fact_key][args_key].size() << '\n';
          TotFacts++;
          return;
 }
@@ -15,49 +12,42 @@ void KRBase::addFact(std::vector<std::string> &facts){
 // :parseFact()
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
+  std::vector<std::string> result;
   std::vector<std::string> facts = query;
   std::vector<int> search;
-  // std::vector<std::string> v;
-  // std::vector<std::string> v1;
-  // std::vector<std::string> v2;
-  // v.push_back("Fact(a5,a2,a4)");
-  // v1.push_back("Fact(a5,a3,a6)");
-  // v2.push_back("Fact(a5,a7,a8)");
-  // addFact(v);
-  // addFact(v1);
-  // addFact(v2);
-  std::string arg;
-  //test.queryFacts(v);
+  std::vector<std::string> args;
+  std::vector<std::string> comp;
+  std::vector<int> search2;
+  std::string temp ="";
+  int counter = 0;
   const char* var = "$";
-  facts =RFITransaction::parseFact(facts);
   for(int i = 0; i < facts.size()-1; i++){
-    arg = facts[i];
-    std::cout << arg.front() << '\n';
-    if (arg.front() != *var){
+    if (facts[i].front() != *var){
       search.push_back(i);
-      std::cout << arg << '\n';
-      std::cout << "got one" << '\n';
+    }else{
+      facts[i].erase(facts[i].begin());
+      args.push_back(facts[i]);
+      search2.push_back(i);
     }
   }
-  // if (FactBase.find(facts.back()) != FactBase.end()){
-  //   std::cout << "Found it" << '\n';
-  // }
-  std::vector<std::string> comp;
-  int counter = 0;
-  std::cout <<  facts.back() << '\n';
   for(int t = 0; t < FactBase[facts.back()][facts.size()-1].size();t++){
-  comp = FactBase[facts.back()][facts.size()-1][t];
-  counter = 0;
-  std::cout << "here" << '\n';
-  for(int j = 0; j < search.size();j++){
-    std::cout<<"You are here!!" << search[j] << '\n';
-    if( comp[search[j]] == facts[search[j]]) std::cout<<"THIS IS THE COUNTER" << counter++ << '\n';
-  }
-  if(counter == search.size()) std::cout << "you foud one " << '\n';
-};
-  //for(int i = 0; i < search.size(); i++) std::cout << search[i] << '\n';
-  std::vector<std::string> args;
-  std::cout << facts[0] << '\n';
+    comp = FactBase[facts.back()][facts.size()-1][t];
+    counter = 0;
+    for(int j = 0; j < search.size();j++){
+      if( comp[search[j]] == facts[search[j]]) counter++;
+    }
+    if(counter == search.size()){
+      for(int i = 0; i < search2.size(); i++){
+        temp += args[i];
+        temp += ":";
+        temp +=comp[search2[i]];
+        temp += " ";
+      };
+    }
+    std::cout <<temp << '\n';
+    result.push_back(temp);
+    temp = "";
+  };
   return facts;
 }
 

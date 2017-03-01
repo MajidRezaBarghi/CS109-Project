@@ -24,8 +24,8 @@ int main(int argc, const char * argv[]) {
   std::vector<std::string> v2;
   v.push_back("Fact(a5,a2,a4)");
   std::vector<std::string> v3;
-  v3.push_back("Fact($a5,a2,a4)");
-  v1.push_back("Fact(a5,a3,a6)");
+  v3.push_back("Fact($a5,$a2,$a4)");
+  v1.push_back("Fact(a56,jfkdla;fkdla,a6)");
   v2.push_back("Fact(a5,a7,a8)");
   v = RFITransaction::parseFact(v);
   v1 = RFITransaction::parseFact(v1);
@@ -33,6 +33,6 @@ int main(int argc, const char * argv[]) {
   test.addFact(v);
   test.addFact(v1);
   test.addFact(v2);
-  test.queryFacts(v3);
+  test.queryFacts(RFITransaction::parseFact(v3));
   return 0;
 }
