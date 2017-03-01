@@ -48,9 +48,9 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
 }
 
 std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rules){
-  
+
   std::vector<std::string> tokens = rules;
-  
+
   char lose[] = ":-";
   removeCharsFromString(tokens[0],lose);
   auto temp = tokens[0];
@@ -96,7 +96,7 @@ std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set
 
   rule_map["OR"]= 1;
   std::cout << "here" << '\n';
-  switch(rule_map[set_facts[1]) {
+  switch(rule_map[set_facts[1]]) {
     case 1:
     std::cout << "here3" << '\n';
       for(int i = 2; i < v.size(); i++) {

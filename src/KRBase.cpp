@@ -20,7 +20,7 @@ void KRBase::addFact(std::vector<std::string> &facts){
          TotFacts++;
 }
 
-void KRBase::deleteFact(std::vector<std::string> &facts) {
+void KRBase::deleteAllFacts(std::vector<std::string> &facts) {
 	 std::string fact_key = facts.back();
          std::size_t args_key = facts.size() - 1 ;
          //std::cout << args_key << '\n';
@@ -29,9 +29,9 @@ void KRBase::deleteFact(std::vector<std::string> &facts) {
          TotFacts--;
 }
 
-std::vector<std::string> KRBase::queryRule(std::string query){
-  return RuleBase[query];
-}
+// std::vector<std::string> KRBase::queryRule(std::string query){
+//   return RuleBase[query];
+// }
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
   std::vector<std::string> result;
@@ -89,18 +89,28 @@ std::vector<std::string> KRBase::getRules(){
     std::cout<<rules[i];
     ret_string = "";
   }
-  
+
   return rules;
 }
 
 void KRBase::addRule(std::vector<std::string>& rules){
+  std::vector<std::string>& v = rules;
+  std::cout << "Adding Rule: ";
+  for(int i = 0; i < v.size(); i++) {
+    std::cout << v[i] << " ";
+  }
+  std::cout << "\n";
          std::string rule_key = rules.back();
          rules.pop_back();
          RuleBase[rule_key] = rules;
 }
 
-void KRBase::deleteRule(std::vector<std::string>& rules){
-         std::string rule_key = rules.back();
-         rules.pop_back();
-         RuleBase[rule_key] = rules;
+void KRBase::deleteAllRules(){
+  auto ret_vector = unlock::extract_keys(RuleBase);
+  for (int i = 0; i < RuleBase[ret_vector[i]].size(); i++){
+    //std::cout << RuleBase[ret_vector[i]] << " ";
+    //for(int j = ret_vector.begin(); j < ret_vector.size(); j++) {
+        RuleBase[ret_vector[i]].erase(ret_vector.begin());
+    //}
+  }
 }
