@@ -164,3 +164,14 @@ void RFITransaction::LOAD(std::string file_name){
 
     //default:
      //something
+
+void RFITransaction::DUMP(std::string file_name) {
+  std::ofstream dump_file;
+  std::vector<std::string> rules;
+  rules = krbase.getRules();
+  dump_file.open("output.sri");
+  for(int i = 0; i < rules.size(); i++) {
+    dump_file << rules[i] << std::endl;
+  }
+  dump_file.close();
+}

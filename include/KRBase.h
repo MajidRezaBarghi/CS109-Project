@@ -11,7 +11,7 @@ namespace unlock{
     }
     return retval;
   }
-
+}
 
 class KRBase
 {
