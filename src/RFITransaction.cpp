@@ -116,6 +116,14 @@ void RFITransaction::LOAD(std::string file_name){
 
 }
 
-void RFITransaction::RULE(std::string rule_string) {
-  
+void RFITransaction::RULE(std::vector<std::string rule_string>) {
+  switch(rule_string[1]):
+    case "OR":
+      for(int i = 2; i < rule_string.size(); i++) {
+        krbase.queryFacts(rule_string);
+      }
+    //case "AND":
+
+    default:
+      //something
 }
