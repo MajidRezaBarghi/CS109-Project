@@ -29,10 +29,8 @@ void KRBase::deleteFact(std::vector<std::string> &facts) {
          TotFacts--;
 }
 
-std::vector<std::string> KRBase::queryRule(const std::vector<std::string>& query){
-  std::vector<std::string> rules= query;
-  rules = RuleBase[rules[0]];
-  return rules;
+std::vector<std::string> KRBase::queryRule(std::string query){
+  return RuleBase[query];
 }
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
