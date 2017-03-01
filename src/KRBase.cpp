@@ -11,13 +11,10 @@ void KRBase::deleteFact(std::vector<std::string> &facts) {
 	 std::string fact_key = facts.back();
          std::size_t args_key = facts.size() - 1 ;
          std::cout << args_key << '\n';
-         FactBase[fact_key][args_key].pop_back(facts);
+         FactBase[fact_key][args_key].pop_back();
          //std::cout << FactBase[fact_key][args_key].size() << '\n';
          TotFacts--;
 }
-
-// std::vector<std::string> kRBase::parseFact(std::vector<std::string>& facts)
-// :parseFact()
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
   std::vector<std::string> result;
@@ -49,7 +46,7 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
         temp += args[i];
         temp += ":";
         temp +=comp[search2[i]];
-        temp += " ";
+        if (i != search2.size()-1) temp += ", ";
       };
     }
     std::cout <<temp << '\n';

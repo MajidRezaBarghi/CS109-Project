@@ -13,6 +13,7 @@ class KRBase: public RFITransaction
       int TotFacts = 0;
       std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> FactBase;
    public:
+      void deleteFact(std::vector<std::string>& v);
       void addFact(std::vector<std::string>& facts);
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
       //std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> FactBase;
