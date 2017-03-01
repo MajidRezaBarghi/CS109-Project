@@ -20,19 +20,9 @@ void KRBase::addFact(std::vector<std::string> &facts){
          TotFacts++;
 }
 
-void KRBase::deleteAllFacts(std::vector<std::string> &facts) {
-	 std::string fact_key = facts.back();
-         std::size_t args_key = facts.size() - 1 ;
-         //std::cout << args_key << '\n';
-         FactBase[fact_key][args_key].pop_back();
-         std::cout << FactBase[fact_key][args_key].size() << '\n';
-         TotFacts--;
-}
-
 std::vector<std::string> KRBase::queryRule(const std::vector<std::string>& query){
   return RuleBase[query[0]];
 }
->>>>>>> b58e760cc07218d3cc250e340185129efd7f69b7
 
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
   std::vector<std::string> result;
@@ -146,11 +136,8 @@ void KRBase::addRule(std::vector<std::string>& rules){
 }
 
 void KRBase::deleteAllRules(){
-  auto ret_vector = unlock::extract_keys(RuleBase);
-  for (int i = 0; i < RuleBase[ret_vector[i]].size(); i++){
-    //std::cout << RuleBase[ret_vector[i]] << " ";
-    //for(int j = ret_vector.begin(); j < ret_vector.size(); j++) {
-        RuleBase[ret_vector[i]].erase(ret_vector.begin());
-    //}
-  }
-}
+  RuleBase.erase(RuleBase.begin(),RuleBase.end());
+ }
+void KRBase::deleteAllFacts(){
+  FactBase.erase(FactBase.begin(),FactBase.end());
+ }

@@ -24,12 +24,12 @@ class KRBase
    public:
       KRBase();
       void addRule(std::vector<std::string>& rules);
-      void deleteAllFacts(std::vector<std::string>& facts);
+      void deleteAllFacts();
       void addFact(std::vector<std::string>& facts);
       bool isKeyinF(std::string key);
       bool isKeyinR(std::string key);
 
-      void deleteRule(std::vector<std::string>& rules);
+      void deleteAllRules();
       std::vector<std::string> getFacts();
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
       std::vector<std::string> queryRule(const std::vector<std::string>& query);
