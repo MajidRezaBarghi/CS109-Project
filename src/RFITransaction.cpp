@@ -48,14 +48,15 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
 }
 
 std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rules){
-
+  
   std::vector<std::string> tokens = rules;
-
-  char lose[] =":-";
+  
+  char lose[] = ":-";
   removeCharsFromString(tokens[0],lose);
-  std::cout << "RULES: ";
-  std::cout <<"THis sucks"<< tokens.size() << '\n';
-  for(int i = 0; i < tokens.size(); i++)std::cout << tokens[i] << "\n";
+  auto temp = tokens[0];
+  std::vector<std::string>::iterator it = tokens.begin();
+  tokens.erase(it);
+  tokens.push_back(temp);
   return tokens;
 }
 std::vector<std::string> RFITransaction::parseInference(std::vector<std::string> queries){
@@ -69,12 +70,22 @@ void RFITransaction::FACT(std::string fact_string){
   std::vector<std::string>tokens = parseFact(facts);
   krbase.addFact(tokens);
 }
+
 void RFITransaction::RULE(std::string rule_string) {
   std::vector<std::string> rules;
+  rule_string.erase(0,5); // erases 'RULE'
   rules.push_back(rule_string);
-  std::vector<std::string>tokens = parseFact(rules);
-  krbase.addFact(tokens);
+  std::vector<std::string>tokens = parseRule(rules);
+  std::vector<std::string> temp_vect = split(tokens[0],' ');
+  std::string temp = tokens[1];
+  tokens = temp_vect;
+  tokens.push_back(temp);
+  for(int i = 0; i < tokens.size(); i++){
+    std::cout << tokens[i] << "\n";
+  }
+  krbase.addRule(tokens);
 }
+
 std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
   std::vector<std::string> v;
   std::cout << krbase.isKeyinR(set_facts[0]) << '\n';
