@@ -21,12 +21,12 @@ void KRBase::addFact(std::vector<std::string> &facts){
   TotFacts++;
 }
 
-<<<<<<< HEAD
+
 
 void KRBase::deleteFact(std::vector<std::string> &facts) {
-=======
+
 void KRBase::deleteAllFacts(std::vector<std::string> &facts) {
->>>>>>> c0ab4db4c83493431215b50741e567d0c58dce95
+
 	 std::string fact_key = facts.back();
          std::size_t args_key = facts.size() - 1 ;
          //std::cout << args_key << '\n';
