@@ -88,7 +88,6 @@ void RFITransaction::RULE(std::string rule_string) {
 
 std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
   std::vector<std::string> v;
-  std::cout << set_facts[0] << '\n';
   if(krbase.isKeyinR(set_facts[0])){
   v = krbase.queryRule(set_facts);
   std::map<std::string,int> rule_map;
@@ -98,8 +97,8 @@ std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set
       for(int i = 1; i < v.size(); i++) {
         std::vector<std::string> temp;
         temp.push_back(v[i]);
-        krbase.queryFacts(parseFact(temp));
-      };
+        INFERENCE(temp);
+      }
     };
   }
   v = parseFact(set_facts);
