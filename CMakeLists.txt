@@ -8,5 +8,5 @@ add_compile_options(-std=c++11)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.h)
-File COPYONLY
+#File COPYONLY
 add_executable(main main.cpp ${sources} ${headers})
