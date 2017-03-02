@@ -16,7 +16,7 @@ bool KRBase::isKeyinR(std::string key){
 void KRBase::addFact(std::vector<std::string> &facts){
   std::string fact_key = facts.back();
   facts.pop_back();
-  std::size_t args_key = facts.size() -1 ;
+  std::size_t args_key = facts.size() ;
   FactBase[fact_key][args_key].push_back(facts);
   TotFacts++;
 }
@@ -36,6 +36,7 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
   std::string temp ="";
   int counter = 0;
   const char* var = "$";
+  //std::cout << facts[0].front() << '\n';
   for(int i = 0; i < facts.size()-1; i++){
     if (facts[i].front() != *var){
       search.push_back(i);
@@ -63,7 +64,7 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
     result.push_back(temp);
     temp = "";
   };
-  return facts;
+  return result;
 }
 std::vector<std::string> KRBase:: getFacts(){
   std::vector<std::string> facts;
@@ -140,7 +141,7 @@ void KRBase::addRule(std::vector<std::string>& rules){
 
 void KRBase::deleteAllRules(){
   RuleBase.erase(RuleBase.begin(),RuleBase.end());
- }
+}
 void KRBase::deleteAllFacts(){
   FactBase.erase(FactBase.begin(),FactBase.end());
  }

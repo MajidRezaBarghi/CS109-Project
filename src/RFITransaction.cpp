@@ -89,7 +89,7 @@ void RFITransaction::RULE(std::string rule_string) {
 std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
   std::vector<std::string> v;
   std::cout << set_facts[0] << '\n';
-  if(krbase.isKeyinR(set_facts[0])){
+  if(krbase.isKeyinR(set_facts[0])){\
   v = krbase.queryRule(set_facts);
   std::map<std::string,int> rule_map;
   rule_map["OR"]= 1;
