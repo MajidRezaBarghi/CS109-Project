@@ -171,13 +171,34 @@ void RFITransaction::DROP(){
   krbase.deleteAllRules();
 }
 
+// void RFITransaction::DUMP(std::string file_name) {
+//   std::ofstream dump_file;
+//   std::vector<std::string> rules;
+//   rules = krbase.getRules();
+//   dump_file.open("output.sri");
+//   for(int i = 0; i < rules.size(); i++) {
+//     dump_file << rules[i] << std::endl;
+//   }
+//   dump_file.close();
+// }
+
 void RFITransaction::DUMP(std::string file_name) {
   std::ofstream dump_file;
   std::vector<std::string> rules;
+  std::vector<std::string> facts;
   rules = krbase.getRules();
-  dump_file.open("output.sri");
-  for(int i = 0; i < rules.size(); i++) {
-    dump_file << rules[i] << std::endl;
+  facts = krbase.getFacts();
+  dump_file.open(file_name);
+  if(dump_file.is_open()){
+    for(int i = 0; i < facts.size(); i++){
+      dump_file << facts[i] << std::endl;
+    }
+    for(int i = 0; i < rules.size(); i++) {
+      dump_file << rules[i] << std::endl;
+    }
+  }else{
+    throw "FILE ERROR: File could not open";
   }
+
   dump_file.close();
 }
