@@ -13,13 +13,21 @@ bool KRBase::isKeyinR(std::string key){
   return RuleBase.count(key)>0;
 }
 
+/*
+  This function takes in a vector of strings and adds it to the Fact Database
+  which is a map<string, map<string, vector<vector <string>>>>.
+*/
 void KRBase::addFact(std::vector<std::string> &facts){
+  //Get name of the Fact which is the last element of the vector
   std::string fact_key = facts.back();
   facts.pop_back();
   std::size_t args_key = facts.size() -1 ;
+  /* We save the given fact into the database by mapping it to its name and the
+   number of arguments in the fact, which will make it easier to find later. */
   FactBase[fact_key][args_key].push_back(facts);
   TotFacts++;
 }
+
 
 std::vector<std::string> KRBase::queryRule(const std::vector<std::string>& query){
   return RuleBase[query[0]];
@@ -126,6 +134,11 @@ std::vector<std::string> KRBase::getRules(){
   return rules;
 }
 
+/* This function is similr to addFact, except this one adds a Rule to the
+  Rule Database which is represented as a map<string, vector<string>>. The
+  key value is the name of the rule we want to add and the vaue is a string of
+  vectors that contain the parameters that satisfy that rule.
+*/
 void KRBase::addRule(std::vector<std::string>& rules){
   std::vector<std::string>& v = rules;
   std::cout << "Adding Rule: ";
@@ -133,9 +146,11 @@ void KRBase::addRule(std::vector<std::string>& rules){
     std::cout << v[i] << " ";
   }
   std::cout << "\n";
-         std::string rule_key = rules.back();
-         rules.pop_back();
-         RuleBase[rule_key] = rules;
+  /* The last element contains the name of the rule. We need it in order to know
+   where on the map we should save the Rule */
+  std::string rule_key = rules.back();
+  rules.pop_back();
+  RuleBase[rule_key] = rules;
 }
 
 void KRBase::deleteAllRules(){

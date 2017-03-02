@@ -57,7 +57,7 @@ public:
   std::vector<std::string> INFERENCE(std::vector<std::string>& set_facts);
   void LOAD(std::string file_name);
   void DUMP(std::string file_name);
-  void DROP(); 
+  void DROP();
   void FACT(std::string fact_string);
   void RULE(std::string rule_string);
 };
