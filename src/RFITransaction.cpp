@@ -149,6 +149,7 @@ void RFITransaction::LOAD(std::string file_name){
         case 3:
           //items = parseInference(items);
           //items = krbase.queryFacts(items);
+          std::cout << items[0] << '\n';
           INFERENCE(items);
           // add parsedRule to KB
           break;

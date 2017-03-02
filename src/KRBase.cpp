@@ -21,7 +21,7 @@ void KRBase::addFact(std::vector<std::string> &facts){
   //Get name of the Fact which is the last element of the vector
   std::string fact_key = facts.back();
   facts.pop_back();
-  FactBase[fact_key][args_key].push_back(facts);
+  FactBase[fact_key][facts.size()].push_back(facts);
   TotFacts++;
 }
 
