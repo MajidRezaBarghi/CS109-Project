@@ -26,19 +26,24 @@ class KRBase
       int TotFacts = 0;
       std::map<std::string,std::vector<std::string>> RuleBase;
       std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> FactBase;
+      std::map<std::string,std::map<std::size_t,std::vector<std::vector<std::string>>>> NewRuleBase;
    public:
       KRBase();
       void addRule(std::vector<std::string>& rules);
+      //void addNewRule(std::string newrule);
       void deleteAllFacts();
       void addFact(std::vector<std::string>& facts);
       bool isKeyinF(std::string key);
       bool isKeyinR(std::string key);
+      int  numOfArgs(std::string key);
 
       void deleteAllRules();
       std::vector<std::string> getFacts();
       std::vector<std::string> queryFacts(const std::vector<std::string>& query);
-      std::vector<std::string> queryRule(const std::vector<std::string>& query);
+      std::vector<std::vector<std::string>> queryRule(const std::string query, int args_key);
       std::vector<std::string> getRules();
+      std::vector<std::string> getArgs(std::string args);
+      std::vector<std::string> parseRule(std::vector<std::string> v,std::vector<std::string> args);
 };
 
 #endif

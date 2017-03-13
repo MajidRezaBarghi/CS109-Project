@@ -10,9 +10,47 @@ bool KRBase::isKeyinF(std::string key){
 }
 
 bool KRBase::isKeyinR(std::string key){
-  return RuleBase.count(key)>0;
+  return NewRuleBase.count(key)>0;
 }
-
+int KRBase::numOfArgs(std::string key){
+  int args_key = 0;
+  std::smatch sm;
+  std::regex keysearch("\\w+");
+  std::regex_search(key,sm,keysearch);
+  key = sm.suffix();
+  keysearch = "(\\$\\w+)|(\\w+)";
+  while (std::regex_search(key,sm,keysearch)) {
+    //std::cout <<"Check point 1" <<sm[0] << '\n';
+    args_key++;
+    key = sm.suffix();
+  }
+  return args_key;
+}
+std::vector<std::string> KRBase::getArgs(std::string args){
+  std::vector<std::string> arguments;
+  std::smatch sm;
+  std::regex keysearch("\\$\\w+");
+  while (std::regex_search(args,sm,keysearch)) {
+    arguments.push_back(sm[0]);
+    args = sm.suffix();
+  }
+  return arguments;
+};
+std::vector<std::string> KRBase::parseRule(std::vector<std::string> v,std::vector<std::string> args){
+  std::vector<std::string> args1 = getArgs(v.back());
+  v.pop_back();
+  while (args.size()!=0) {
+    args1.back() = "\\"+args1.back();
+    std::regex rep (args1.back());
+    for(int i=1; i < v.size(); i++){
+          v[i] = std::regex_replace(v[i],rep,args.back());
+          //std::cout << v[i] << '\n';
+    }
+    args.pop_back();
+    args1.pop_back();
+  }
+  return v;
+}
 /*
   This function takes in a vector of strings and adds it to the Fact Database
   which is a map<string, map<string, vector<vector <string>>>>.
@@ -26,11 +64,9 @@ void KRBase::addFact(std::vector<std::string> &facts){
 }
 
 
-std::vector<std::string> KRBase::queryRule(const std::vector<std::string>& query){
-  return RuleBase[query[0]];
+std::vector<std::vector<std::string>> KRBase::queryRule(const std::string query,int args_key){
+  return NewRuleBase[query][args_key];
 }
-
-
 std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& query){
   std::vector<std::string> result;
   std::vector<std::string> facts = query;
@@ -46,7 +82,7 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
     if (facts[i].front() != *var){
       search.push_back(i);
     }else{
-      facts[i].erase(facts[i].begin());
+      //facts[i].erase(facts[i].begin());
       args.push_back(facts[i]);
       search2.push_back(i);
     }
@@ -58,15 +94,17 @@ std::vector<std::string> KRBase::queryFacts(const std::vector<std::string>& quer
       if( comp[search[j]] == facts[search[j]]) counter++;
     }
     if(counter == search.size()){
-      for(int i = 0; i < search2.size(); i++){
-        temp += args[i];
+      for(int i = 0; i < comp.size(); i++){
+        temp += facts[i];
         temp += ":";
-        temp +=comp[search2[i]];
-        if (i != search2.size()-1) temp += ", ";
+        temp +=comp[i];
+        if (i != comp.size()-1) temp += ", ";
       };
     }
-    std::cout <<temp << '\n';
+    if (temp.length()){
+    //std::cout <<temp << '\n';
     result.push_back(temp);
+    }
     temp = "";
   };
   return result;
@@ -83,53 +121,78 @@ std::vector<std::string> KRBase:: getFacts(){
   for(int i = 0; i < key_factnames.size(); i++){
     key_argcount = unlock::extract_keys(FactBase[key_factnames[i]]);
     for(int j = 0; j < key_argcount.size(); j++){
-      for(int k = 0; k < FactBase[key_factnames[i]][key_argcount[j]].size(); i++){
-        fact_vects.push_back(FactBase[key_factnames[i]][key_argcount[j]][k]);
+      fact_vects = FactBase[key_factnames[i]][key_argcount[j]];
+      for(int k = 0; k < fact_vects.size(); k++){
+        for(int t =0;t< fact_vects[k].size();t++){
+        fact_string += fact_vects[k][t];
+        fact_string += (1 < (fact_vects[k].size()-t))?",":"";
+        }
+        facts.push_back(fact_string);
+        fact_string = "";
       }
     }
-  }
-
-  for(int i = 0; i < fact_vects.size(); i++){
-    for(int j = 0; j < fact_vects[i].size(); j++){
-      fact_string += fact_vects[i][j];
-      fact_string += (0 < (fact_vects.size()-j))?",":"";
+    for(int j = 0; j < facts.size(); j++){
+      fact_string += "FACT ";
+      fact_string += key_factnames[i];
+      fact_string += "(";
+      fact_string += facts[j];
+      fact_string += ")";
+      alternative_facts.push_back(fact_string);
+      fact_string = std::string();
     }
-    facts.push_back(fact_string);
-    fact_string = "";
+    facts = std::vector<std::string>();
   }
-  fact_string = std::string();
-
-  for(int i = 0; i < key_factnames.size(); i++){
-    fact_string += "FACT ";
-    fact_string += key_factnames[i];
-    fact_string += "(";
-    fact_string += facts[i];
-    fact_string += ")";
-    alternative_facts.push_back(fact_string);
-    fact_string = std::string();
-  }
-
   return alternative_facts;
 }
 
 std::vector<std::string> KRBase::getRules(){
   std::vector<std::string> rules;
-  std::string ret_string = "";
-  auto keys = unlock::extract_keys(RuleBase);
-  for(int i=0;i < keys.size(); i++){
-    ret_string += "RULE ";
-    ret_string += std::string(keys[i]) + ":- ";
-    for(int j = 0; j < RuleBase[keys[i]].size(); j++){
-      ret_string += RuleBase[keys[i]][j];
-      ret_string += (j == (RuleBase[keys[i]].size()-1))?" ":"";
+  std::vector<std::string> alternative_rules;
+  std::vector<std::vector<std::string>> rule_vects;
+  //key_factnames are all the names of the facts
+  std::vector<std::string> key_rulenames = unlock::extract_keys(NewRuleBase);
+  std::vector<std::size_t> key_argcount;
+  std::string rule_string = std::string();
+  for(int i = 0; i < key_rulenames.size(); i++){
+    key_argcount = unlock::extract_keys(NewRuleBase[key_rulenames[i]]);
+    std::vector<std::string> args;
+    for(int j = 0; j < key_argcount.size(); j++){
+      rule_vects = NewRuleBase[key_rulenames[i]][key_argcount[j]];
+      std::vector<std::string> tempargs;
+      for(int k = 0; k < rule_vects.size(); k++){
+        tempargs = getArgs(rule_vects[k].back());
+        rule_vects[k].pop_back();
+        std::string TEMP;
+        for(int t = 0;t<tempargs.size();t++){
+          TEMP += tempargs[t];
+          TEMP += (1 < (tempargs.size()-t))?",":"";
+        }
+        args.push_back(TEMP);
+        TEMP = "";
+        for(int t = 0; t < rule_vects[k].size(); t++){
+          rule_string += rule_vects[k][t];
+          rule_string += (1 < (rule_vects[k].size()-t))?" ":"";
+        }
+        rules.push_back(rule_string);
+        rule_string = "";
+      }
     }
-    rules.push_back(ret_string);
-    rules.push_back(RuleBase[keys[i]].back());
-    std::cout<<rules[i];
-    ret_string = "";
+    for(int j=0; j< rules.size();j++){
+      rule_string += "RULE ";
+      rule_string += key_rulenames[i];
+      rule_string += "(";
+      rule_string += args[j];
+      rule_string += ")";
+      rule_string += ":-";
+      rule_string += rules[j];
+      alternative_rules.push_back(rule_string);
+      rule_string = std::string();
+    };
+    rules = std::vector<std::string>();
   }
 
-  return rules;
+  return alternative_rules;
+
 }
 
 /* This function is similr to addFact, except this one adds a Rule to the
@@ -139,18 +202,25 @@ std::vector<std::string> KRBase::getRules(){
 */
 void KRBase::addRule(std::vector<std::string>& rules){
   std::vector<std::string>& v = rules;
-  std::cout << "Adding Rule: ";
-  for(int i = 0; i < v.size(); i++) {
-    std::cout << v[i] << " ";
-  }
-  std::cout << "\n";
   /* The last element contains the name of the rule. We need it in order to know
    where on the map we should save the Rule */
-  std::string rule_key = rules.back();
+  int args_key = 0;
+  std::string args = "";
+  std::regex keysearch ("\\w+");
+  std::smatch sm;
+  std::regex_search(rules.back(),sm,keysearch);
+  std::string rule_key = sm[0];
+  rules.back() = sm.suffix();
+  keysearch = "(\\$\\w+)";
+  while (std::regex_search(rules.back(),sm,keysearch)) {
+    args +=sm[0];
+    args_key++;
+    rules.back() = sm.suffix();
+  }
   rules.pop_back();
-  RuleBase[rule_key] = rules;
+  rules.push_back(args);
+  NewRuleBase[rule_key][args_key].push_back(rules);
 }
-
 void KRBase::deleteAllRules(){
   RuleBase.erase(RuleBase.begin(),RuleBase.end());
 }

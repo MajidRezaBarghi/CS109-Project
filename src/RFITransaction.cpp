@@ -1,13 +1,7 @@
-//
-//  RFITransaction.cpp
-//  RKTransaction
-//
-//  Created by Matthew Shehan on 2/23/17.
-//  Copyright © 2017 Matthew Shehan. All rights reserved.
-//
-
 
 #include "RFITransaction.h"
+
+static std::vector<std::string> default_vector;
 
 RFITransaction::RFITransaction(){
 
@@ -41,9 +35,6 @@ std::vector<std::string> RFITransaction::parseFact(std::vector<std::string>& fac
   tokens = split(tokens[1],')');
   tokens = split(tokens[0],',');
   tokens.push_back(fact_name);
-  // for(int i=0; i < tokens.size(); i++)std::cout<<"tokens[" << i << "]" << tokens[i] << " ";
-  // // debugger
-  // std::cout << "\n";
   return tokens;
 }
 
@@ -53,10 +44,12 @@ std::vector<std::string> RFITransaction::parseRule(std::vector<std::string> &rul
 
   char lose[] = ":-";
   removeCharsFromString(tokens[0],lose);
-  auto temp = tokens[0];
+  std::vector<std::string> temp;
+  temp.push_back(tokens[0]);
   std::vector<std::string>::iterator it = tokens.begin();
   tokens.erase(it);
-  tokens.push_back(temp);
+  tokens.push_back(temp[0]);
+
   return tokens;
 }
 std::vector<std::string> RFITransaction::parseInference(std::vector<std::string> queries){
@@ -81,33 +74,87 @@ void RFITransaction::RULE(std::string rule_string) {
   tokens = temp_vect;
   tokens.push_back(temp);
   for(int i = 0; i < tokens.size(); i++){
-    //std::cout << tokens[i] << "\n";
   }
   krbase.addRule(tokens);
 }
 
-std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts){
-  std::vector<std::string> v;
-  if(krbase.isKeyinR(set_facts[0])){
-  v = krbase.queryRule(set_facts);
-  std::map<std::string,int> rule_map;
-  rule_map["OR"]= 1;
-  switch(rule_map[v[0]]) {
-    case 1:
-      for(int i = 1; i < v.size(); i++) {
-        std::vector<std::string> temp;
-        temp.push_back(v[i]);
-        INFERENCE(temp);
+std::vector<std::string> RFITransaction::INFERENCE(std::vector<std::string> &set_facts,bool t = true){
+  std::vector<std::vector<std::string>> vrules;
+  std::vector<std::string> vQ;
+  std::vector<std::string> rules;
+  std::vector<std::string> replacements;
+  std::vector<std::string> resultsA;
+  int number  = krbase.numOfArgs(set_facts[0]);
+  vQ = parseFact(set_facts);
+  if(krbase.isKeyinR(vQ.back())){
+    vrules = krbase.queryRule(vQ.back(),number);
+    std::map<std::string,int> rule_map;
+    while(vrules.size()!=0){
+      rules = vrules.back();
+      replacements = vQ;
+      replacements.pop_back();
+      rules = krbase.parseRule(rules,replacements);
+
+      vrules.pop_back();
+      rule_map["OR"]= 1;
+      rule_map["AND"] =2;
+      switch(rule_map[rules[0]]) {
+        case 1:
+          for(int i = 1; i < rules.size(); i++) {
+            std::vector<std::string> temp;
+            temp.push_back(rules[i]);
+            temp = INFERENCE(temp,false);
+            resultsA.insert(resultsA.end(),temp.begin(),temp.end());
+          }
+          break;
+        case 2:
+          std::vector<std::string> temp;
+          std::vector<std::string> results;
+          std::vector<std::string> tempargs;
+          temp.push_back(rules[1]);
+          results = INFERENCE(temp,false);
+          temp.pop_back();
+          tempargs = krbase.getArgs(rules[2]);
+          for(int j = 0; j <results.size();j++){
+            std::string save = rules[2];
+            for (int i = 0;i<tempargs.size();i++){
+              std::string s = "\\";
+              std::string p = "\\"+tempargs[i];
+              std::regex rep (p);
+              s +=tempargs[i];
+              s = "("+s;
+              s +="):(\\w+)";
+              std::regex e (s);
+              std::smatch sm;
+              std::regex_search(results[j],sm,e);
+              if (sm[2].length()){
+                std::string repThis = static_cast<std::string>(sm[2]);
+                save = std::regex_replace(save,rep,repThis);
+              }
+            }
+            temp.push_back(save);
+            auto a = INFERENCE(temp,false);
+            temp.pop_back();
+            if (a.size()){
+              for(int t=0; t<a.size();t++){
+                std::regex remove ("[^\\$]\\w+:\\w+");
+                a[t] = std::regex_replace(a[t],remove,"");
+                std::string res = results[j] + a[t];
+                resultsA.push_back(res);
+              }
+            }
+          }
+          break;
       }
-    };
+    }
   }
-  v = parseFact(set_facts);
-  if(krbase.isKeyinF(v.back())){
-    krbase.queryFacts(v);
+  if(krbase.isKeyinF(vQ.back())){
+    return krbase.queryFacts(vQ);
   }
-  return v;
+  return resultsA;
 }
 void RFITransaction::LOAD(std::string file_name){
+  std::vector<std::string> qres;
   std::ifstream in_file;
   in_file.open(file_name, std::ios_base::in);
 
@@ -133,7 +180,6 @@ void RFITransaction::LOAD(std::string file_name){
       iss >> flag;
       while(iss >> next){
         items.push_back(next);
-        //std::cout << items.size() << '\n';
       }
 
       switch(parser_map[flag]){
@@ -147,10 +193,25 @@ void RFITransaction::LOAD(std::string file_name){
           break;
 
         case 3:
-          //items = parseInference(items);
-          //items = krbase.queryFacts(items);
           std::cout << items[0] << '\n';
-          INFERENCE(items);
+          qres = INFERENCE(items);
+          for (int l=0; l<qres.size();l++){
+            std::vector<std::string> tempargs = krbase.getArgs(items[0]);
+            for(int k=0;k<tempargs.size();k++){
+              std::string s = "\\";
+              s +=tempargs[k];
+              s = "("+s;
+              s +="):(\\w+)";
+              std::regex e (s);
+              std::smatch sm;
+              std::regex_search(qres[l],sm,e);
+              std::string suptemp = static_cast<std::string>(sm[0]);
+              suptemp.erase(suptemp.begin());
+              std::cout << suptemp<<" ";
+            }
+            std::cout <<'\n';
+          }
+          std::cout <<'\n';
           // add parsedRule to KB
           break;
 
@@ -174,10 +235,19 @@ void RFITransaction::DROP(){
 void RFITransaction::DUMP(std::string file_name) {
   std::ofstream dump_file;
   std::vector<std::string> rules;
+  std::vector<std::string> facts;
   rules = krbase.getRules();
-  dump_file.open("output.sri");
-  for(int i = 0; i < rules.size(); i++) {
-    dump_file << rules[i] << std::endl;
+  facts = krbase.getFacts();
+  dump_file.open(file_name);
+  if(dump_file.is_open()){
+    for(int i = 0; i < facts.size(); i++){
+      dump_file << facts[i] << std::endl;
+    }
+    for(int i = 0; i < rules.size(); i++) {
+      dump_file << rules[i] << std::endl;
+    }
+  }else{
+    throw "FILE ERROR: File could not open";
   }
   dump_file.close();
 }

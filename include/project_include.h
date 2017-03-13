@@ -1,10 +1,3 @@
-//
-//  project_include.h
-//  RKTransaction
-//
-//  Created by Matthew Shehan on 2/24/17.
-//  Copyright © 2017 Matthew Shehan. All rights reserved.
-//
 
 #ifndef project_include_h
 #define project_include_h
@@ -18,5 +11,6 @@
 #include <algorithm>
 #include <cctype>
 #include <list>
+#include <regex>
 
 #endif /* project_include_h */
